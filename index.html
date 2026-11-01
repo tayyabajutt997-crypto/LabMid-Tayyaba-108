@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 
+  COMSATS Vehari - CSC336 Web Tech - Lab Mid Fall-2026
+  Name: Tayyaba Habib - Roll: 108 - BSSE 5th - FA21-BSE-108
+  Instructor: Yasmeen Jana - CLO4 Applying
+-->
+<title>Typing Challenge - Tayyaba Habib 108</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-blobs"><div class="blob blob1"></div><div class="blob blob2"></div></div>
+
+<header class="topbar">
+  <div class="container d-flex justify-content-between align-items-center flex-wrap">
+    <div class="logo">⌨️ TypeMaster <span>COMSATS Vehari | CSC336 | Tayyaba Habib 108</span></div>
+    <div class="student-info">
+      <input id="studentName" value="Tayyaba Habib" class="form-control form-control-sm" readonly>
+      <input id="regNo" value="FA21-BSE-108" class="form-control form-control-sm" readonly>
+    </div>
+  </div>
+</header>
+
+<main class="container main-wrap">
+<!-- HOME SCREEN - Mandatory Requirement #1 -->
+<section id="homeScreen">
+<div class="text-center mb-4">
+  <h1 class="main-title">Typing Challenge Game</h1>
+  <p class="subtitle">Submitted by Tayyaba Habib | Roll 108 | 5th Sem BSE | Instructor Yasmeen Jana | Lab Mid 25/10/2026 | Submission 4/11/2026 | 30 Marks | CLO4</p>
+</div>
+
+<div class="row g-4 justify-content-center">
+  <!-- MODE A - As per Page 1 -->
+  <div class="col-md-6">
+    <div class="game-card modeA-card">
+      <div class="card-icon">🫧</div>
+      <h3>Mode A: Bubbles</h3>
+      <h6>Letter Recognition</h6>
+      <p>Display at least five bubbles simultaneously. Each bubble contains a letter, moves upward at controlled speed. When player presses matching key, remove bubble and increase score. Penalty for wrong key. Count miss when bubble reaches top. End when 6 misses. Difficulty increases.</p>
+      <ul>
+        <li>5+ bubbles simultaneously</li>
+        <li>Visual feedback, score, penalty</li>
+        <li>Speed increases with time</li>
+      </ul>
+      <div class="difficulty-select">
+        <label>Difficulty (Req #2):</label>
+        <select id="diffA" class="form-select form-select-sm">
+          <option value="easy">Easy - Slow, 5 Bubbles, 70s</option>
+          <option value="medium" selected>Medium - Normal, 6 Bubbles, 60s</option>
+          <option value="hard">Hard - Fast, 8 Bubbles, 50s</option>
+        </select>
+      </div>
+      <button class="btn btn-primary w-100 mt-3 btn-start" onclick="startGame('A')">▶ Start Bubbles Mode</button>
+    </div>
+  </div>
+
+  <!-- MODE B - As per Page 1 -->
+  <div class="col-md-6">
+    <div class="game-card modeB-card">
+      <div class="card-icon">🧲</div>
+      <h3>Mode B: KeyMagnet</h3>
+      <h6>Keyboard Precision</h6>
+      <p>Display target key and visible keyboard layout. Generate target keys from JavaScript array. Include practice set home-row A, S, D, F, J, K, L. Award points for correct. Track correct, incorrect, response time. Allow key set / difficulty selection.</p>
+      <ul>
+        <li>Target key + Keyboard layout</li>
+        <li>Practice set: A S D F J K L ;</li>
+        <li>Tracks response time & accuracy</li>
+      </ul>
+      <div class="difficulty-select">
+        <label>Key Set / Difficulty (Req #2):</label>
+        <select id="diffB" class="form-select form-select-sm">
+          <option value="easy">Easy - Home Row (A S D F J K L)</option>
+          <option value="medium" selected>Medium - Alphabets A-Z</option>
+          <option value="hard">Hard - Alphanumeric + Symbols</option>
+        </select>
+      </div>
+      <button class="btn btn-success w-100 mt-3 btn-start" onclick="startGame('B')">▶ Start KeyMagnet Mode</button>
+    </div>
+  </div>
+</div>
+
+<div class="requirements-bar mt-4">
+  <span>✓ #1 Game Selection</span><span>✓ #2 Difficulty</span><span>✓ #3 Start/Restart/Reset</span><span>✓ #4 Score</span><span>✓ #5 Feedback</span><span>✓ #6 Completion</span><span>✓ #7 Result</span><span>✓ #8 State Reset</span><span>✓ #9 Timer</span><span>✓ #10 Responsive</span>
+</div>
+</section>
+
+<!-- GAME A SCREEN -->
+<section id="gameAScreen" class="game-screen d-none">
+<div class="game-header">
+  <button class="btn btn-outline-light btn-sm" onclick="goHome()">← Home</button>
+  <h4>🫧 Bubbles - <span id="levelA">Medium</span> | Tayyaba 108</h4>
+  <div class="controls">
+    <button class="btn btn-warning btn-sm" onclick="pauseGameA()">⏸ Pause</button>
+    <button class="btn btn-info btn-sm" onclick="restartGame('A')">🔄 Restart</button>
+    <button class="btn btn-danger btn-sm" onclick="resetGame('A')">Reset</button>
+  </div>
+</div>
+<div class="stats-bar">
+  <div class="stat"><span>Score</span><b id="scoreA">0</b></div>
+  <div class="stat"><span>Correct</span><b id="correctA">0</b></div>
+  <div class="stat"><span>Wrong</span><b id="wrongA">0</b></div>
+  <div class="stat"><span>Misses</span><b id="missA">0 / 6</b></div>
+  <div class="stat"><span>Speed</span><b id="speedA">1.0x</b></div>
+  <div class="stat"><span>Time</span><b id="timeA">60s</b></div>
+</div>
+<div id="feedbackA" class="feedback"></div>
+<div id="bubbleContainer" class="bubble-container"></div>
+</section>
+
+<!-- GAME B SCREEN -->
+<section id="gameBScreen" class="game-screen d-none">
+<div class="game-header">
+  <button class="btn btn-outline-light btn-sm" onclick="goHome()">← Home</button>
+  <h4>🧲 KeyMagnet - <span id="levelB">Medium</span> | Tayyaba 108</h4>
+  <div class="controls">
+    <button class="btn btn-warning btn-sm" onclick="pauseGameB()">⏸ Pause</button>
+    <button class="btn btn-info btn-sm" onclick="restartGame('B')">🔄 Restart</button>
+    <button class="btn btn-danger btn-sm" onclick="resetGame('B')">Reset</button>
+  </div>
+</div>
+<div class="stats-bar">
+  <div class="stat"><span>Score</span><b id="scoreB">0</b></div>
+  <div class="stat"><span>Correct</span><b id="correctB">0</b></div>
+  <div class="stat"><span>Wrong</span><b id="wrongB">0</b></div>
+  <div class="stat"><span>Accuracy</span><b id="accB">100%</b></div>
+  <div class="stat"><span>Avg Time</span><b id="avgTimeB">0ms</b></div>
+  <div class="stat"><span>Time</span><b id="timeB">60s</b></div>
+</div>
+<div id="feedbackB" class="feedback"></div>
+<div class="keymagnet-area">
+  <div class="target-key-display">
+    <p>Type This Key - From JS Array</p>
+    <div id="targetKey" class="target-key">A</div>
+    <div id="keyDescription" class="key-desc">Home Row</div>
+  </div>
+  <div id="virtualKeyboard" class="virtual-keyboard"></div>
+</div>
+</section>
+
+<!-- RESULT SCREEN - Requirement #7 -->
+<section id="resultScreen" class="result-screen d-none">
+<div class="result-card">
+  <h2 id="resultTitle">🎮 Game Over</h2>
+  <p id="resultReason">Miss limit reached</p>
+  <p><small>Tayyaba Habib | Roll 108 | BSSE 5th</small></p>
+  <div class="result-stats">
+    <div><span>Final Score</span><b id="resScore">0</b></div>
+    <div><span>Correct</span><b id="resCorrect">0</b></div>
+    <div><span>Incorrect</span><b id="resWrong">0</b></div>
+    <div><span>Accuracy</span><b id="resAcc">0%</b></div>
+    <div><span>Difficulty</span><b id="resDiff">Medium</b></div>
+    <div><span>Mode</span><b id="resMode">Bubbles</b></div>
+  </div>
+  <div class="d-flex gap-2 justify-content-center mt-4">
+    <button class="btn btn-primary" onclick="restartGame(currentMode)">Play Again</button>
+    <button class="btn btn-outline-secondary" onclick="goHome()">Home</button>
+  </div>
+</div>
+</section>
+
+</main>
+<script src="script.js"></script>
+</body>
+</html>
